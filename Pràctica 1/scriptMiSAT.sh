@@ -20,9 +20,14 @@ do
     echo
     echo "------------------"
     echo $f
+    echo "misat og:"
+    start_measuring_time
+    ./misatog < $f
+    stop_measuring_time
+    show_elapsed_time
     echo "misat:"
     start_measuring_time
     ./misat < $f
     stop_measuring_time
     show_elapsed_time
-done
+  done

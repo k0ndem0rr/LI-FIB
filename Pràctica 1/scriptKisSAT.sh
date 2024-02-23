@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #aquest script s'executa en linux fent: bash scriptKisSAT.sh
-kTime = $0
-mTime = $0
+#kTime = $0
+#mTime = $0
 start_measuring_time() {
   read start < <(date +'%s')
 }
@@ -34,14 +34,14 @@ show_elapsed_time() {
 
 
 #for f in vars-100*.cnf
-for f in input/vars*.cnf
+for f in input/vars-200-01.cnf
 do
     echo
     echo "------------------"
     echo $f
     echo "KisSAT:"
     start_measuring_time
-    ./kissat -v $f > outKisSAT
+    ./kissat -q $f > outKisSAT
     stop_measuring_time
     egrep -o "UNSATISFIABLE|SATISFIABLE" outKisSAT
     egrep "decisions" outKisSAT
@@ -51,7 +51,7 @@ do
     ./misat < $f
     stop_measuring_time
     show_elapsed_time
- #   save_misat_time
+#   save_misat_time
     show_elapsed_time
   #  show_time_ratio
  done

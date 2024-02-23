@@ -92,10 +92,31 @@ void backtrack(){
 
 // Heuristic for finding the next decision literal:
 int getNextDecisionLiteral(){
-  for (uint i = 1; i <= numVars; ++i) // stupid heuristic:
-    if (model[i] == UNDEF) return i;  // returns first UNDEF var, positively
-  return 0; // reurns 0 when all literals are defined
+  vector<int> unresolved(numVars + 1, 0); // Vector para contar las apariciones de variables no asignadas
+
+  // Contar las apariciones de variables no asignadas en cláusulas no satisfechas
+  for (uint i = 0; i < numClauses; ++i) {
+    for (uint j = 0; j < clauses[i].size(); ++j) {
+      int lit = abs(clauses[i][j]);
+      if (model[lit] == UNDEF) {
+        unresolved[lit]++;
+      }
+    }
+  }
+
+  // Encontrar la variable no asignada con el máximo grado
+  int maxUnresolved = 0;
+  int decisionLit = 0;
+  for (uint i = 1; i <= numVars; ++i) {
+    if (model[i] == UNDEF && unresolved[i] > maxUnresolved) {
+      maxUnresolved = unresolved[i];
+      decisionLit = i;
+    }
+  }
+
+  return decisionLit;
 }
+
 
 void checkmodel(){
   for (uint i = 0; i < numClauses; ++i){
